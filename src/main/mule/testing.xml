@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:batch="http://www.mulesoft.org/schema/mule/batch" xmlns:validation="http://www.mulesoft.org/schema/mule/validation"
+	xmlns:wsc="http://www.mulesoft.org/schema/mule/wsc"
+	xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
+http://www.mulesoft.org/schema/mule/wsc http://www.mulesoft.org/schema/mule/wsc/current/mule-wsc.xsd
+http://www.mulesoft.org/schema/mule/validation http://www.mulesoft.org/schema/mule/validation/current/mule-validation.xsd
+http://www.mulesoft.org/schema/mule/batch http://www.mulesoft.org/schema/mule/batch/current/mule-batch.xsd">
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="7fc1f0ac-762e-42de-a699-f43ed1a2bd5a" >
+		<http:listener-connection host="0.0.0.0" port="8081" />
+	</http:listener-config>
+	<http:request-config name="HTTP_Request_configuration" doc:name="HTTP Request configuration" doc:id="08ca3d48-dbe3-4349-a79c-b1c60da225a6" >
+		<http:request-connection host="localhost" port="80" />
+	</http:request-config>
+	<wsc:config name="Web_Service_Consumer_Config" doc:name="Web Service Consumer Config" doc:id="dca9fa39-bf9d-49f8-9a47-66db129ce24b" >
+		<wsc:connection wsdlLocation="http://www.dneonline.com/calculator.asmx?wsdl" service="Calculator" port="CalculatorSoap" address="http://www.dneonline.com/calculator.asmx" />
+	</wsc:config>
+	<http:request-config name="HTTP_Request_configuration2" doc:name="HTTP Request configuration" doc:id="0454bc94-8b28-4275-9620-c8f01d8ff2d9" >
+		<http:request-connection host="indigo-services.us-e2.cloudhub.io" port="80" />
+	</http:request-config>
+	<configuration-properties doc:name="Configuration properties" doc:id="b5373263-204f-41b1-a9fb-12aef56204fb" file="account-dev.yaml" />
+	<flow name="testingFlow" doc:id="91dc2760-6a8a-4299-9bde-28eba75fd4cb" >
+		<http:listener doc:name="Listener" doc:id="98d047b3-5103-41ef-a2d2-7638da69cfa1" config-ref="HTTP_Listener_config" path="/batch"/>
+		<set-payload value='#[payload]' doc:name="Set Payload" doc:id="f63f3165-d130-44a9-992c-06fbf5e41ea7" />
+		<logger level="INFO" doc:name="Logger" doc:id="525bb950-30d6-48a4-ab2e-d8a3a16ae355" message="response.....#[payload]"/>
+	</flow>
+</mule>
